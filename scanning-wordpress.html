@@ -1,0 +1,89 @@
+<p>One of the best features of WordPress is that it is Open Source. This allows for the likes of you and I to modify it as we please, create plugins for it, alter the feel and look of it along with how we interact with the site.</p>
+
+
+
+<p>This adaptability of WordPress and its thriving community of coders is amazing. However it can also lead to security issues. As most source code is readily available to review, it allows people to dissect it, looking for vulnerabilities to exploit. Whether this is for educational purposes, fun in the way of &#8216;hijacking&#8217; a site or for malicious intent whereby sensitive information can be downloaded or files injected in to the website are all a reality.</p>
+
+
+
+<p>The resources are tremendous for this, ranging from the <a href="https://wpvulndb.com/">WPScan Vulnerability Database</a> or the <a href="hhttps://www.cvedetails.com/">CVE Details</a> website&#8217;s <a href="https://www.cvedetails.com/vulnerability-list/vendor_id-2337/product_id-4096/">WordPress Security Vulnerabilities</a> page. There are plenty more websites out there that will inform you of security vulnerabilities and even more which will provide you with how to utilize these exploits.</p>
+
+
+
+<p>One tool against these vulnerabilities is <a href="https://wpscan.org/">WPScan</a> &#8211; a free and open source security scanner specifically designed for WordPress based sites. Their home page gives a myriad of download options along with usage instructions. I personally use the Docker version and will provide instructions accordingly.</p>
+
+
+
+<h4>WPScan &#8211; Docker</h4>
+
+
+
+<p>The installation of WPScan to be used on Docker is as easy as pulling the official image down:</p>
+
+
+
+<pre><code>docker pull wpscanteam/wpscan</code></pre>
+
+
+
+<p> This will pull down the Docker image that contains the necessary files to run scans.  Once downloaded you can view the available images by running:</p>
+
+
+
+<pre><code>docker image ls</code></pre>
+
+
+
+<p>To run WPScan using Docker, you will need to call the Docker image to run. You will want to pass some arguments to WPScan though, such as the URL that you are scanning. An example would be:</p>
+
+
+
+<pre><code>docker run -it --rm wpscanteam/wpscan --url placeonthe.net</code></pre>
+
+
+
+<p>Breaking down the above, we call on Docker to run the <code>wpscanteam/wpscan</code> and running the <code>-it</code> flag, which will allow you to interact with the running image using standard input/output. The <code>--rm</code> flag will remove the running image once the app has completed, cleaning up after itself.</p>
+
+
+
+<p>WPScan provides a number of arguments that you can pass. Some of the more common arguments you may wish to run:</p>
+
+
+
+<p>WPScan provides a number of arguments that you can pass. Some of the more common arguments you may wish to run:
+–url	Define the URL to run the scan against
+–force	Force the scan, such as when the initial check suggests that the target domain is not a WordPress site
+–enumerate u	Gather information on users
+–api-token	Allows you to add your WPVulnDB API token in to scan the site against known vulnerabilities in the database
+—wp-content-dir	Define where the URL for the wp-content directory. This is useful when the content may be served over a CDN on a custom URL</p>
+
+
+
+<p>The above put together would look like this:</p>
+
+
+
+<pre><code>docker run -it --rm wpscanteam/wpscan --url placeonthe.net --api-token MYAPIKEY --force --ignore-main-redirect --en
+umerate u --wp-content-dir cdn.placeonthe.net/wp-content</code></pre>
+
+
+
+<h4>Update</h4>
+
+
+
+<p>Whether it is the database or the app itself that gets updated, it sometimes becomes necessary to update the Docker image when you start seeing this when seeing the following message:</p>
+
+
+
+
+
+<p>it is easy to update the image using the Docker command:</p>
+
+
+
+<pre><code>docker pull wpscanteam/wpscan</code></pre>
+
+
+
+<p>This will update the image to the latest version and will resolve the update message popping up whenever you run the script. Even though you update the database when the image is run, as the database is not being written outside of Docker, when the instance stops running, those updates are lost.</p>
