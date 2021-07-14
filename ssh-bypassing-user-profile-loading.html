@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<head><title>ssh: bypassing user profile loading</title></head>
+<body>
+  <p>The other day one of our projects at work had its Git master branch updated, I had been working on a few projects of my own with local branches based off of the earlier master branch. As usual, I had to pull down the latest version of master and merge it in to my local branch. My normal workflow is for this is:</p>
+
+
+
+<pre><code># Ensure I switch to the master branch locally
+git checkout master
+# Pull down the latest version of the repo
+git fetch -p origin
+# Merge the pulled down origin in to my local master
+git merge origin/master
+# Switch to the branch I am working on
+git checkout my-local-branch
+# Merge the master branch in to my-local-branch
+git merge master</code></pre>
+
+
+
+<p>The above works great and is my regular workflow. Most of the time I am able to merge things without conflict, however on this occasion there was a merge conflict. This wouldn&#8217;t be an issue, however I overlooked the <code>git</code> output that indicated this to me.</p>
+
+
+
+<p>What followed is I built a local <code>.deb</code> package to test on one of our dev servers. I pushed to the package up, installed it via <code>dpkg</code> and thought awesome, let&#8217;s give it a test. That&#8217;s when I ran in to a problem.</p>
+
+
+
+<pre><code>-bash: /usr/local/lib/path/to/the/script.sh: line 20: syntax error near unexpected token `&lt;&lt;&lt;'
+-bash: /usr/local/lib/<code>path/to/the/script</code>.sh: line 20: `&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD'
+Connection to dev.server closed.</code></pre>
+
+
+
+<p>Well that&#8217;s not good! Essentially the profile on the server loads a set of scripts by default and in one of those scripts was my merge error from <code>git</code>. This caused a syntax error when reading the file and the profile failed to load, closing my <code>SSH</code> connection.</p>
+
+
+
+<p>I didn&#8217;t have direct root access so I started looking for a way to disable loading of the profiles in order to allow me to SSH in. This yielded the following to tack on to the SSH command:</p>
+
+
+
+<pre><code>ssh dev.server "bash --noprofile"</code></pre>
+
+
+
+<p>The above tacks executes the <code>bash</code> command with the <code>--noprofile</code> flag. This flag specifically prevents profiles from loading, including as explained in the <a href="https://linux.die.net/man/1/bash">Bash man pages</a> and includes <code>/etc/profile</code> as well as local user profiles such as <code>/home/user/.bashrc</code>.</p>
+
+
+
+<p>This is great, I was able to log in, however at the same time, what I found was that this also meant a <code>TTY</code> terminal control session was not started and I was unable to <code>sudo</code> in order to edit or remove the file. I kept running into the following error:</p>
+
+
+
+<pre class="wp-block-code"><code>sudo: no tty present and no askpass program specified</code></pre>
+
+
+
+<p>After some searching I found a great article on <a href="https://www.shell-tips.com/linux/sudo-no-tty-present-and-no-askpass-program-specified/">shell-tips.com</a> that shed some further light on to what was happening with regard to the lack of a <code>TTY</code> session and the proposed fix being adding the <code>-t</code> flag to the <code>SSH</code> call. In a nutshell the flag provides a pseudo-sudo shell when the connection is made, allowing me to run <code>sudo</code> commands without loading the profiles that were calling the corrupt file.</p>
+
+
+
+<p>I was able to successfully amend the file on the server and restore access while resolving the merge conflict locally and successfully merging the branches. The above is a great way to get around issues where a script being called from a user profile fails and your SSH session fails to load.</p>
+</body>
+</html>
