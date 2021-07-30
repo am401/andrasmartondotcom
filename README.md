@@ -11,7 +11,7 @@ Reworking the original *www.placeonthe.net* site moving away from WordPress to a
 - Incorrect CSS class usage on the WP scanning page
 
 ### Changed
-- <pre><code> styling in CSS
+- `<pre><code>` styling in CSS
 - The stylesheet from `styles.css` to `style.css`
 - How `a href` links are colored
 - Updated CSS color from #ff4473 to #0ebfe9 for heading and links
