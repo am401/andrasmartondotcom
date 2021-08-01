@@ -2,6 +2,11 @@
 Reworking the original *www.placeonthe.net* site moving away from WordPress to a static site.
 
 # Changelog
+## 2021-07-31
+### Added
+- `<meta>` tags to the header to define charset and window sizes across the board
+### Fixed
+- Updated each page to match styling
 ## 2021-07-30
 ### Added
 - Custom 404 page created with neon flashing CSS
