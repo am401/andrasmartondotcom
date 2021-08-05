@@ -2,6 +2,10 @@
 Reworking the original *www.placeonthe.net* site moving away from WordPress to a static site.
 
 # Changelog
+## 2021-08-05
+### Changed
+- Introduced CSS versioning in the HTML files
+
 ## 2021-08-04
 ### Added
 - Header to `index.html` for menu links with placeholders
