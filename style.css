@@ -25,20 +25,10 @@ body {
     font-size: calc(16px + 6 * ((100vw - 320px) / 680));
   }
 }
-@media screen and (min-width: 1000px) {
-  .heading {
-    font-size: 35px;
-  }
-}
 
 @media screen and (min-width: 320px) {
   .heading-right {
     font-size: calc(16px + 6 * ((100vw - 320px) / 680));
-  }
-}
-@media screen and (min-width: 1000px) {
-  .heading-right {
-    font-size: 35px;
   }
 }
 
@@ -75,6 +65,17 @@ li:before {
   font-color: #fff;
   content: "⇢";
   padding-right: 5px;
+}
+
+@media screen and (min-width: 320px) {
+  li {
+    font-size: calc(16px + 6 * ((100vw - 320px) / 680));
+  }
+}
+@media screen and (min-width: 320px) {
+  li:before {
+    font-size: calc(16px + 6 * ((100vw - 320px) / 680));
+  }
 }
 
 /* Neon Text for 404 page */

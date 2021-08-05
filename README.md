@@ -3,6 +3,8 @@ Reworking the original *www.placeonthe.net* site moving away from WordPress to a
 
 # Changelog
 ## 2021-08-05
+### Added
+- CSS `@media` rule to header/list elements to scale on mobile devices
 ### Changed
 - Introduced CSS versioning in the HTML files
 
