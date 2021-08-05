@@ -1,6 +1,5 @@
 body {
     background-color: #3f3b3a;
-    /*text-align: center;*/
     max-width: 960px;
     margin-left: auto;
     margin-right: auto;
@@ -9,42 +8,16 @@ body {
 
 .heading-right {
     float: right;
-    font-size: 35px;
+    font-size: 30px;
     font-family: sans-serif;
-}
-
-@media screen and (min-width: 320px) {
-.heading-right {
-	font-size: calc(16px + 6 * ((100vw - 320px) / 680));
-  }
-}
-
-@media screen and (min-width: 1000px) {
-.heading-right {
-    font-size: 22px;
-  }
 }
 
 .heading {
     margin-top: 30px;
     margin-bottom: 30px;
-    font-size: 35px;
-    /*color: #0ebfe9;*/
+    font-size: 30px;
     color: #fff;
     font-family: sans-serif;
-}
-
-
-@media screen and (min-width: 320px) {
-.heading {
-	font-size: calc(16px + 6 * ((100vw - 320px) / 680));
-  }
-}
-
-@media screen and (min-width: 1000px) {
-.heading {
-    font-size: 22px;
-  }
 }
 
 .text {
