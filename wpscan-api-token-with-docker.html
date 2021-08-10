@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Place On The Net</title>
+	    <meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css?v=1.0.2">
+    </head>
+    <body>
+        <div class="heading">
+            www.placeonthe.net - my website
+			<div class="heading-right">
+				<a href="/index.html">&#126;&#47;</a> |
+				<a href="#ctf">ctf</a> |
+				<a href="#projects">projects</a>
+			</div>
+		</div>
+        <div class="text">
+
+<p>I've been trying to get this working as intended for a little while now. My regular workflow while using <a href="https://wpscan.org/">wpscan</a> has been that I have to log in to WP Scan's Vulnerability Database website to retrieve my API token and build out the following scan parameters:</p>
+
+<pre class="wp-block-code"><code>docker run -it --rm wpscanteam/wpscan --url https://example.com --api-token MY_API_TOKEN</code></pre>
+
+<p>This was tedious at best, so I have been toying with the notion of setting up a local file as recommended by the application <a href="https://wpscan.org/">documentation</a>:</p>
+
+<blockquote class="wp-block-quote"><p>Save API Token in a file</p><p>The feature mentioned above is useful to keep the API Token in a config file and not have to supply it via the CLI each time. To do so, create the ~/.wpscan/scan.yml file containing the below:</p><p>cli_options:<br>  api_token: YOUR_API_TOKEN</p></blockquote>
+
+<p>I had created the relevant file, setting my API token, but struggled to get the Docker container to read my local file. I started digging around and the majority of information I found was creating links between the local system and the container for the direction. I didn't find a specific guide or instruction for this. After a large chunk of today was spent researching and testing various implementations I brain stormed with a colleague.</p>
+
+<p>He pointed me in the direction of the Docker file <a href="https://hub.docker.com/r/wpscanteam/wpscan/dockerfile">link</a> on the Docker Hub which gave me the clue I needed:</p>
+
+<pre class="wp-block-code"><code>RUN adduser -h /wpscan -g WPScan -D wpscan</code></pre>
+
+<p>That told me that the home directory being created for the container was set to <code>/wpscan</code>. Since the application documents already indicated that the file will be read from the <code>./wpscan</code> directory I tried the following combination:</p>
+
+<pre class="wp-block-code"><code>docker run -it --rm -v ${HOME}/.wpscan/scan.yml:/wpscan/.wpscan/scan.yml wpscanteam/wpscan --url https://example.com</code></pre>
+
+<p>And with that, wpscan was picking up my set API key without issue and using it to scan the sites. Perfect! </p>
+
+<p>In the above example the <code>-v</code> flag allows you to link a volume to the container. The syntax for that is <code>source:destination</code> in its simplest form. What you are linking from the local file system (source) to the file system on the container (destination).</p>
+
+<p>Hopefully the above will help others get rolling with configuring their API token with wpscan while using Docker.</p>
+</div>
+</body>
+</html>

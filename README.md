@@ -2,6 +2,10 @@
 Reworking the original *www.placeonthe.net* site moving away from WordPress to a static site.
 
 # Changelog
+## 2021-08-09
+### Added
+- New content including `protect-directories-in-nginx.html`, `troubleshoot-with-curl.html` and `wpscan-api-token-with-docker.html`
+
 ## 2021-08-05
 ### Added
 - CSS `@media` rule to header/list elements to scale on mobile devices
