@@ -2,6 +2,14 @@
 Reworking the original *www.placeonthe.net* site moving away from WordPress to a static site.
 
 # Changelog
+## 2021-08-10
+### Added
+- Article title and written date to articles
+### Changed
+- File structure, moving the articles into `YYYY/MM/` directories
+### Fixed
+- Title headers for the new articles
+
 ## 2021-08-09
 ### Added
 - New content including `protect-directories-in-nginx.html`, `troubleshoot-with-curl.html` and `wpscan-api-token-with-docker.html`

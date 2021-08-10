@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>add emojis to nginx HTTP headers</title>
+        <title>protect directories in nginx</title>
         <link rel="stylesheet" href="style.css?v=1.0.2">
 	    <meta charset="UTF-8">
 	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,6 +16,8 @@
 			</div>
         </div>
         <div class="text">
+		<h1>protect directories in nginx</h1>
+		<h2>Written: 2020/12/31</h2>
 <p>I've recently had a number of requests for custom NGINX rules to be created in order to protect WordPress upload directories. This scenario may surface if you are using NGINX as your primary web server or NGINX sits before say an upstream Apache server and the <strong>.htaccess</strong> files is not an option. I have recently configured several rules to protect directories.<br>The following rule is specifically for static files, such as PDFs:</p>
 
 <pre class="wp-block-code"><code>if ( $uri ~* ^/wp-content/uploads/.+\.pdf$ ) {
