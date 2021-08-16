@@ -1,0 +1,25 @@
+# ignore swap files
+*.swp
+
+# ignore compiled files - albeit unlikely these will be present
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+# ignore datbase / log files - similar, doubt they will be here
+*.log
+*.sql
+*.sqllite
+
+# ignore OS generated files
+Thumbs.db
+.DS_Store
+.AppleDouble
+.LSOverride
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk

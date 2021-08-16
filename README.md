@@ -7,6 +7,9 @@ Reworking the original *www.placeonthe.net* site moving away from WordPress to a
 - Styling errors within the CTF pages
 - Converted `<>` tags in `level-1.html` XML output to HTML code
 
+### Added
+- `.gitignore` file
+
 ## 2021-08-15
 ### Added
 - CTF page for the first level of Cloud Flaws
