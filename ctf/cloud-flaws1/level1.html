@@ -26,7 +26,7 @@
                 <code>
                     dig A +noall flaws.cloud +answer
                     flaws.cloud.		5	IN	A	52.218.220.18
-                </body>
+                </code>
             </pre>
             <p>Checking for CNAME records did not reveal anything interesting, but the IP address appears to belong to an S3 bucket. Trying to directly visit this IP address in the browser redirects us to the <a href="https://aws.amazon.com/s3/">Amazon S3</a> site.</p>
             <p>Based on the hint about buckets, we we can start exploring the idea that the site may be hosted as a static site within an AWS Bucket. If this is the case, reviewing the <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/website-hosting-custom-domain-walkthrough.html#root-domain-walkthrough-create-buckets">Configuring a static website using a custom domain</a> documentation comes to hand. <b>Step 2</b> indicates the following: <b>These bucket names must match your domain name exactly</b>.</p>
