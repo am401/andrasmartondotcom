@@ -2,6 +2,10 @@
 Reworking the original *www.placeonthe.net* site moving away from WordPress to a static site.
 
 # Changelog
+## 2021-08-16
+### Fixed
+- Styling errors within the CTF pages
+
 ## 2021-08-15
 ### Added
 - CTF page for the first level of Cloud Flaws

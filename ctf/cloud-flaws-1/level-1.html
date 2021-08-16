@@ -11,7 +11,7 @@
             www.placeonthe.net - my website
 			<div class="heading-right">
 				<a href="/index.html">&#126;&#47;</a> |
-				<a href="#ctf">ctf</a> |
+				<a href="/ctf">ctf</a> |
 				<a href="#projects">projects</a>
 			</div>
 		</div>
@@ -24,8 +24,8 @@
             <p>For this challenge, we are asked to find the next level's sub-domain. The clue we get is it will be related to Amazon S3 buckets. Looking at <a href="http://flaws.cloud">flaws.cloud</a>'s DNS records we can see that the domain is pointed at an IP address (<b>52.218.220.162</b>):</p>
             <pre>
                 <code>
-                    dig A +noall flaws.cloud +answer
-                    flaws.cloud.		5	IN	A	52.218.220.18
+dig A +noall flaws.cloud +answer
+flaws.cloud.		5	IN	A	52.218.220.18
                 </code>
             </pre>
             <p>Checking for CNAME records did not reveal anything interesting, but the IP address appears to belong to an S3 bucket. Trying to directly visit this IP address in the browser redirects us to the <a href="https://aws.amazon.com/s3/">Amazon S3</a> site.</p>
@@ -33,46 +33,46 @@
             <p>Searching around for the domain structure of static sites hosted on AWS S3 buckets, I found <a href="https://www.cdputnam.com/blog/s3-custom-domain/">this article on hosting a site on an S3 bucket</a> which lead me to thefollowing syntax:</p>
             <pre>
                 <code>
-                    AWS auto-populated: example.com.s3.amazonaws.com
-                    Direct, Region spcific S3 URL to use: example.com.s3-website-us-east-1.amazonaws.com
+AWS auto-populated: example.com.s3.amazonaws.com
+Direct, Region spcific S3 URL to use: example.com.s3-website-us-east-1.amazonaws.com
                 </code>
             </pre>
             <p>We already know that when hosting a static site, the bucket name will need to match the custom domain. Using the above formula, therefore we can try out the domain <a href="http://flaws.cloud.s3.amazonaws.com">flaws.cloud.s3.amazonaws.com</a>. In my experience, Amazon bucket information is displayed as an XML file. Going to the above site, that is exactly that we end up with. Scrolling down, we find the following:</p>
             <pre>
                 <code>
-                    This XML file does not appear to have any style information associated with it. The document tree is shown below. 
-                    <ListBucketResult>
-                    <Name>flaws.cloud</Name>
-                    <Prefix/>
-                    <Marker/>
-                    <MaxKeys>1000</MaxKeys>
-                    <IsTruncated>false</IsTruncated>
-                    ...
+This XML file does not appear to have any style information associated with it. The document tree is shown below. 
+<ListBucketResult>
+<Name>flaws.cloud</Name>
+<Prefix/>
+<Marker/>
+<MaxKeys>1000</MaxKeys>
+<IsTruncated>false</IsTruncated>
+...
 
-                    ...
-                    <Contents>
-                    <Key>secret-dd02c7c.html</Key>
-                    <LastModified>2017-02-27T01:59:30.000Z</LastModified>
-                    <ETag>"c5e83d744b4736664ac8375d4464ed4c"</ETag>
-                    <Size>1051</Size>
-                    <StorageClass>STANDARD</StorageClass>
-                    </Contents>
-                    </ListBucketResult>
+...
+<Contents>
+<Key>secret-dd02c7c.html</Key>
+<LastModified>2017-02-27T01:59:30.000Z</LastModified>
+<ETag>"c5e83d744b4736664ac8375d4464ed4c"</ETag>
+<Size>1051</Size>
+<StorageClass>STANDARD</StorageClass>
+</Contents>
+</ListBucketResult>
                 </code>
             </pre>
             <p>Towards the bottom, we can see a file called <b>secret-dd02c7c.html</b>. When we visit the page we are greeted with the following message:</p>
             <pre>
                 <code>
-                 _____  _       ____  __    __  _____
-                 |     || |     /    ||  |__|  |/ ___/
-                 |   __|| |    |  o  ||  |  |  (   \_
-                 |  |_  | |___ |     ||  |  |  |\__  |
-                 |   _] |     ||  _  ||  `  '  |/  \ |
-                 |  |   |     ||  |  | \      / \    |
-                 |__|   |_____||__|__|  \_/\_/   \___|
+_____  _       ____  __    __  _____
+|     || |     /    ||  |__|  |/ ___/
+|   __|| |    |  o  ||  |  |  (   \_
+|  |_  | |___ |     ||  |  |  |\__  |
+|   _] |     ||  _  ||  `  '  |/  \ |
+|  |   |     ||  |  | \      / \    |
+|__|   |_____||__|__|  \_/\_/   \___|
 
-                 Congrats! You found the secret file!
-                 Level 2 is at http://level2-c8b217a33fcf1f839f6f1f73a00a9ae7.flaws.cloud
+Congrats! You found the secret file!
+Level 2 is at http://level2-c8b217a33fcf1f839f6f1f73a00a9ae7.flaws.cloud
                  </code>
              </pre>
              <p>Following the above link leads us to Level 2. The above link provides some additional information on how to avoid exposing AWS bucket based sites in a similar manner.</p>
