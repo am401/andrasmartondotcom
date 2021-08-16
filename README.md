@@ -5,6 +5,7 @@ Reworking the original *www.placeonthe.net* site moving away from WordPress to a
 ## 2021-08-16
 ### Fixed
 - Styling errors within the CTF pages
+- Converted `<>` tags in `level-1.html` XML output to HTML code
 
 ## 2021-08-15
 ### Added
