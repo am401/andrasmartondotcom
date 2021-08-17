@@ -9,6 +9,7 @@ Reworking the original *www.placeonthe.net* site moving away from WordPress to a
 
 ### Added
 - `.gitignore` file
+- Another page to CTF Cloud Flaws
 
 ## 2021-08-15
 ### Added

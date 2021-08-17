@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>cloud flaws aws ctf level 1</title>
+	    <meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/style.css?v=1.0.2">
+    </head>
+    <body>
+        <div class="heading">
+            www.placeonthe.net - my website
+			<div class="heading-right">
+				<a href="/index.html">&#126;&#47;</a> |
+				<a href="/ctf">ctf</a> |
+				<a href="#projects">projects</a>
+			</div>
+		</div>
+        <div class="text">
+			<h1>cloud flaws aws ctf level 1</h1>
+			<h2>Written: 2021/08/16</h2>
+            <h2>Challenge notes</h2>
+            <p>The next level is fairly similar, with a slight twist. You're going to need your own AWS account for this. You just need the free tier.</p>
+            <hr>
+			<p>This challenge starts off much like the <a href="level-1.html">first challenge</a>, however on this occasion we are making use of an AWS account. I suspected this may be to use <a href="https://aws.amazon.com/cli/">AWS CLI</a>. This is not something I used a lot, so it was back to digging around documentation.</p>
+			<p>I started to look at the <a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html#cli-configure-quickstart-creds">Amazon configuration basics documentation for AWS CLI</a> for an idea. This is where it became apparent why I needed an AWS account in the first place.</p>
+			<p>According to the document using <code>aws configure</code>, we can configure our <b>AWS Access Key ID</b> and <b>AWS Secret Access Key</b> along with a region. This can then be used to connect to buckets.</p>
+			<p>After setting up my own configuration based on the documentation and using my account I tried the syntax suggested:</p>
+			<pre><code>aws s3 --profile myprofile ls s3://level2-c8b217a33fcf1f839f6f1f73a00a9ae7.flaws.cloud
+2017-02-26 20:02:15      80751 everyone.png
+2017-03-02 21:47:17       1433 hint1.html
+2017-02-26 20:04:39       1035 hint2.html
+2017-02-26 20:02:14       2786 index.html
+2017-02-26 20:02:14         26 robots.txt
+2017-02-26 20:02:15       1051 secret-e4443fc.html</code></pre>
+			<p>We can see the <b>secret-e4443fc.html</b> towards the bottom. Visiting that page we get the following message:</p>
+			<pre><code>_____  _       ____  __    __  _____
+|     || |     /    ||  |__|  |/ ___/
+|   __|| |    |  o  ||  |  |  (   \_
+|  |_  | |___ |     ||  |  |  |\__  |
+|   _] |     ||  _  ||  `  '  |/  \ |
+|  |   |     ||  |  | \      / \    |
+|__|   |_____||__|__|  \_/\_/   \___|
+
+Congrats! You found the secret file!
+Level 3 is at http://level3-9afd3927f195e10225021a578e6f78df.flaws.cloud</code></pre>
+			<p>Much like the previous level, navigating to the third level gives us insight as to what caused us the ability to list out the content.</p>
+		</div>
+	</body>
+</html>
