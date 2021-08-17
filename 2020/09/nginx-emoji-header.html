@@ -11,7 +11,7 @@
             www.placeonthe.net - my website
 			<div class="heading-right">
 				<a href="/index.html">&#126;&#47;</a> |
-				<a href="#ctf">ctf</a> |
+				<a href="/ctf">ctf</a> |
 				<a href="#projects">projects</a>
 			</div>
         </div>
@@ -19,61 +19,50 @@
 			<h1>add emojis to nginx HTTP headers</h1>
 			<h2>Written: 2020/04/29</h2>
             <p>The other day while perusing Twitter, I came across a Tweet mentioning <a href="https://icanhazip.com">icanhazip.com</a>, a site I regularly use to confirm either my <strong>IPv4</strong> or <strong>IPv6</strong> public IP address.</p>
-
             <p>The site is run by <a href="https://twitter.com/majorhayden">Major Hayden</a> who I also happen to follow on Twitter. The combination of the two yielded me coming across the <a href="https://twitter.com/elenalindq/status/1304651703904546816" data-type="URL" data-id="https://twitter.com/elenalindq/status/1304651703904546816">following tweet by @elenalindq</a> in my feed about a Duck emoji in the header of the site:</p>
-
             <pre><code>curl -IL https://icanhazip.com
-            HTTP/2 200
-            server: nginx
-            date: Tue, 15 Sep 2020 03:32:56 GMT
-            content-type: text/plain; charset=UTF-8
-            content-length: 13
-            access-control-allow-origin: *
-            access-control-allow-methods: GET
-            x-rtfm: Learn about this site at http://bit.ly/icanhazip-faq and do not abuse the service.
-            x-node: icanhazip-dfw-1
-            x-donation: This site is expensive to run. You can donate BTC to 3LSp89k9qnMJBpV7AUNF3M2Eo1vatpkYpm
-            x-duck: 🦆</code></pre>
-
+HTTP/2 200
+server: nginx
+date: Tue, 15 Sep 2020 03:32:56 GMT
+content-type: text/plain; charset=UTF-8
+content-length: 13
+access-control-allow-origin: *
+access-control-allow-methods: GET
+x-rtfm: Learn about this site at http://bit.ly/icanhazip-faq and do not abuse the service.
+x-node: icanhazip-dfw-1
+x-donation: This site is expensive to run. You can donate BTC to 3LSp89k9qnMJBpV7AUNF3M2Eo1vatpkYpm
+x-duck: 🦆</code></pre>
             <p>That lead me to locate other Tweets and posts about using emoji&#8217;s in NGINX headers, or HTTP headers as a whole. Some further digging is showing that as long as the UTC-8 character set is enabled on the server, the use of emoji&#8217;s within the NGINX configuration file should work.</p>
-
             <p>I went on to test various emoji setups out by setting various headers within www.placeonthe.net&#8217;s configuration file. While trying out different emoji&#8217;s, I did note that using the actual unicode for the emoji did not render correctly.</p>
-
             <p>I eventually found an NGINX article covering the use of emoji&#8217;s within the NGINX configuration file at <a href="https://www.nginx.com/blog/emoji-nginx-plus-configuration/" data-type="URL" data-id="https://www.nginx.com/blog/emoji-nginx-plus-configuration/">Introducing Full Emoji Support in NGINX and NGINX Plus Configuration</a>. The article indicated just copying the emoji in to the configuration file will allow it to be used in even more ways than just returning a header.</p>
-
             <p>I eventually found a <a href="https://unicode.org/emoji/charts/full-emoji-list.html#1f369" data-type="URL" data-id="https://unicode.org/emoji/charts/full-emoji-list.html#1f369">good list of emoji&#8217;s</a> to test within the configuration file and how they would look when being viewed via cURL in this case.. I eventually settled on the glorious donut: 🍩 </p>
-
             <pre><code>curl -IL https://www.placeonthe.net
-            HTTP/2 200
-            date: Tue, 15 Sep 2020 03:49:38 GMT
-            content-type: text/html; charset=UTF-8
-            set-cookie: __cfduid=d793486fe2bfb7cdbbfdb49f9b449b6541600141777; expires=Thu, 15-Oct-20 03:49:37 GMT; path=/; domain=.www.placeonthe.net; HttpOnly; SameSite=Lax
-            vary: Accept-Encoding
-            vary: Accept-Encoding
-            set-cookie: wp_visit_time_test=deleted; expires=Thu, 01-Jan-1970 00:00:01 GMT; Max-Age=0
-            link: &lt;https://www.placeonthe.net/wp-json/>; rel="https://api.w.org/"
-            x-powered-by: WP Engine
-            x-cacheable: SHORT
-            vary: Accept-Encoding,Cookie
-            cache-control: max-age=600, must-revalidate
-            x-cache: MISS
-            x-cache-group: normal
-            x-xss-protection: 1; mode=block
-            x-content-type-options: nosniff
-            x-frame-options: SAMEORIGIN
-            x-donut: : 🍩
-            cf-cache-status: DYNAMIC
-            cf-request-id: 05317af42a0000bb1600ae9200000001
-            expect-ct: max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
-            server: cloudflare
-            cf-ray: 5d2f61004a11bb16-SEA</code></pre>
-
+HTTP/2 200
+date: Tue, 15 Sep 2020 03:49:38 GMT
+content-type: text/html; charset=UTF-8
+set-cookie: __cfduid=d793486fe2bfb7cdbbfdb49f9b449b6541600141777; expires=Thu, 15-Oct-20 03:49:37 GMT; path=/; domain=.www.placeonthe.net; HttpOnly; SameSite=Lax
+vary: Accept-Encoding
+vary: Accept-Encoding
+set-cookie: wp_visit_time_test=deleted; expires=Thu, 01-Jan-1970 00:00:01 GMT; Max-Age=0
+link: &lt;https://www.placeonthe.net/wp-json/>; rel="https://api.w.org/"
+x-powered-by: WP Engine
+x-cacheable: SHORT
+vary: Accept-Encoding,Cookie
+cache-control: max-age=600, must-revalidate
+x-cache: MISS
+x-cache-group: normal
+x-xss-protection: 1; mode=block
+x-content-type-options: nosniff
+x-frame-options: SAMEORIGIN
+x-donut: : 🍩
+cf-cache-status: DYNAMIC
+cf-request-id: 05317af42a0000bb1600ae9200000001
+expect-ct: max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+server: cloudflare
+cf-ray: 5d2f61004a11bb16-SEA</code></pre>
             <p>So far I have tested this on Ubuntu, OSX and OpenBSD using iTerm2 without issues and using Chrome&#8217;s Dev Tools to view headers too. I was able to open the NGINX configuration file using vim and the emoji was present. Parsing the configuration file also did not return any errors!</p>
-
             <p>In order to set the actual header in the configuration file I merely applied the following header: </p>
-
             <pre><code>add_header X-Donut: "🍩";</code></pre>
-
             <p>I have found a few interesting examples online of using the headers more as comical representations than for anything beyond that, but it&#8217;s certainly a quirky feature. Definitely an interesting concept I will continue to explore.</p>
         </div>
     </body>

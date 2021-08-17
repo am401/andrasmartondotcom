@@ -11,24 +11,19 @@
             www.placeonthe.net - my website
 			<div class="heading-right">
 				<a href="/index.html">&#126;&#47;</a> |
-				<a href="#ctf">ctf</a> |
+				<a href="/ctf">ctf</a> |
 				<a href="#projects">projects</a>
 			</div>
 		</div>
         <div class="text">
 			<h1>troubleshoot with curl</h1>
 			<h2>Written: 2020/11/29</h2>
-<p>I use <a href="https://curl.se/">cURL</a> every single day to troubleshoot a variety of issues both at work and while working on projects. It is an excellent tool to get an idea of what is happening when a call is made to a website. While this tool is vast in its features including connecting via <code>SFTP</code>, I will not be covering those steps within this article. Let's jump right into it!</p>
-
-<h2>Headers</h2>
-
-<p>One great feature of cURL is the ability to easily check the headers being returned from a website. In practical terms, this helps me identify the response code my request is returning, it has in the past helped me identify whether my request is hitting the right server and whether the right headers are being returned.</p>
-
-<h4>Returning headers</h4>
-
-<p>To have cURL return the headers, pass the <code>-I</code> (capital i) or <code>--head</code> flags:</p>
-
-<pre class="wp-block-code"><code>➜  curl -I https://www.potn.local
+            <p>I use <a href="https://curl.se/">cURL</a> every single day to troubleshoot a variety of issues both at work and while working on projects. It is an excellent tool to get an idea of what is happening when a call is made to a website. While this tool is vast in its features including connecting via <code>SFTP</code>, I will not be covering those steps within this article. Let's jump right into it!</p>
+            <h2>Headers</h2>
+            <p>One great feature of cURL is the ability to easily check the headers being returned from a website. In practical terms, this helps me identify the response code my request is returning, it has in the past helped me identify whether my request is hitting the right server and whether the right headers are being returned.</p>
+            <h4>Returning headers</h4>
+            <p>To have cURL return the headers, pass the <code>-I</code> (capital i) or <code>--head</code> flags:</p>
+            <pre class="wp-block-code"><code>➜  curl -I https://www.potn.local
  HTTP/2 200
  date: Sun, 29 Nov 2020 03:58:17 GMT
  content-type: text/html; charset=UTF-8
@@ -55,10 +50,8 @@
  expect-ct: max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
  server: cloudflare
  cf-ray: 5f9968cdaa8e9afa-DFW</code></pre>
-
-<p>The above is the output we get from getting the headers for this site. A useful flag to include with <code>--head</code> is <code>-L</code> or <code>--location</code>, which tells <code>cURL</code> to follow <strong>3XX</strong> redirects. This flag is useful when you want to ensure your request gets to the destination. Running <code>curl -I https://www.www.potn.local</code> would stop at the first page, however the above actually returns a <code>HTTP/2 301</code> header, as I have it redirecting to the apex domain, but without the <code>--location</code> flag we would not get to the next location (redirect). Adding the flag looks like this:</p>
-
-<pre class="wp-block-code"><code>➜  curl -IL https://www.www.potn.local
+            <p>The above is the output we get from getting the headers for this site. A useful flag to include with <code>--head</code> is <code>-L</code> or <code>--location</code>, which tells <code>cURL</code> to follow <strong>3XX</strong> redirects. This flag is useful when you want to ensure your request gets to the destination. Running <code>curl -I https://www.www.potn.local</code> would stop at the first page, however the above actually returns a <code>HTTP/2 301</code> header, as I have it redirecting to the apex domain, but without the <code>--location</code> flag we would not get to the next location (redirect). Adding the flag looks like this:</p>
+        <pre><code>➜  curl -IL https://www.www.potn.local
  HTTP/2 301
  date: Sun, 29 Nov 2020 04:04:05 GMT
  content-type: text/html
@@ -97,125 +90,106 @@
  expect-ct: max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
  server: cloudflare
  cf-ray: 5f997150a980eccf-DFW</code></pre>
-
-<p>Within this  set,  useful flag to keep in mind is <code>-k</code> (<code>--insecure</code>) which will allow you to proceed even if an SSL connection error is detected. The output on a certificate error looks like this:</p>
-
-<pre class="wp-block-code"><code>curl: (60) SSL certificate problem: certificate has expired
+                <p>Within this  set,  useful flag to keep in mind is <code>-k</code> (<code>--insecure</code>) which will allow you to proceed even if an SSL connection error is detected. The output on a certificate error looks like this:</p>
+                <pre><code>curl: (60) SSL certificate problem: certificate has expired
 More details here: https://curl.haxx.se/docs/sslcerts.html
 
 curl failed to verify the legitimacy of the server and therefore could not
 establish a secure connection to it. To learn more about this situation and
 how to fix it, please visit the web page mentioned above.</code></pre>
-
-<p>As the two examples above show, there is quite a lot of data there that may or may not be necessary for the task you are troubleshooting. To actually cover how I use the above here are some examples:</p>
-
-<ul><li>Check for page redirects. I often check unexpected redirects while troubleshooting WordPress sites. Often plugins will set the <code>X-Redirect-By: Wordpress</code> header as per the <a href="https://developer.wordpress.org/reference/functions/wp_redirect/">WordPress.org Developer code reference</a>. Retrieving the headers can help identify the source of the loop</li><li>Confirm that the response code is as expected</li><li>Often hosts will set their own custom headers to identify their platform. This can help determine whether the request is hitting the right server if a recent DNS change has taken place</li><li>When setting custom headers such as <code>X-Frame-Options</code>, <code>Content-Security-Policy</code> or other similar headers, you can confirm that these are present once set on the server</li><li>Checking whether a page is cached or not. This may vary on the host you are checking with, but often you will see cache headers displayed</li></ul>
-
-<h4>Cookies</h4>
-
-<p>Cookies can be an important factor to test, whether the cookie was set or how a site reacts to using a specific cookie. It can be extremely useful to test cookie based cache exclusions with <code>cURL</code> by providing the request with the cookie that meets the specific rule. The two main cookie options that I use are:</p>
-
-<ul><li><code>-b</code> or <code>--cookie</code> which tells <code>cURL</code> to use a specific cookie. An example would be:</li></ul>
-
-<pre class="wp-block-code"><code>curl -b 'utm_market=abc123' https://www.potn.local</code></pre>
-
-<p>The above command sends the cookie named <code>utm_market</code> to the site with the content <code>abc123</code>. An example as mentioned would be to set a cookie that is expected to exclude a page from cache and using the <code>-IL</code> flag from the above section to see what cache headers are returned.</p>
-
-<ul><li><code>-c</code> or <code>--cookie-jar</code> allows you to retrieve cookies either straight to standard output or to a file:</li></ul>
-
-<pre class="wp-block-code"><code>Standard output:
+                <p>As the two examples above show, there is quite a lot of data there that may or may not be necessary for the task you are troubleshooting. To actually cover how I use the above here are some examples:</p>
+                <ul>
+                    <li>Check for page redirects. I often check unexpected redirects while troubleshooting WordPress sites. Often plugins will set the <code>X-Redirect-By: Wordpress</code> header as per the <a href="https://developer.wordpress.org/reference/functions/wp_redirect/">WordPress.org Developer code reference</a>. Retrieving the headers can help identify the source of the loop</li>
+                    <li>Confirm that the response code is as expected</li>
+                    <li>Often hosts will set their own custom headers to identify their platform. This can help determine whether the request is hitting the right server if a recent DNS change has taken place</li><li>When setting custom headers such as <code>X-Frame-Options</code>, <code>Content-Security-Policy</code> or other similar headers, you can confirm that these are present once set on the server</li>
+                    <li>Checking whether a page is cached or not. This may vary on the host you are checking with, but often you will see cache headers displayed</li>
+                </ul>
+                <h4>Cookies</h4>
+                <p>Cookies can be an important factor to test, whether the cookie was set or how a site reacts to using a specific cookie. It can be extremely useful to test cookie based cache exclusions with <code>cURL</code> by providing the request with the cookie that meets the specific rule. The two main cookie options that I use are:</p>
+                <ul>
+                    <li><code>-b</code> or <code>--cookie</code> which tells <code>cURL</code> to use a specific cookie. An example would be:</li>
+                </ul>
+                <pre><code>curl -b 'utm_market=abc123' https://www.potn.local</code></pre>
+                <p>The above command sends the cookie named <code>utm_market</code> to the site with the content <code>abc123</code>. An example as mentioned would be to set a cookie that is expected to exclude a page from cache and using the <code>-IL</code> flag from the above section to see what cache headers are returned.</p>
+                <ul>
+                    <li><code>-c</code> or <code>--cookie-jar</code> allows you to retrieve cookies either straight to standard output or to a file:</li>
+                </ul>
+                <pre><code>Standard output:
 curl -c - https://www.potn.local -IL
 
 Save to a file:
 curl -c my_cookie_file.txt https://www.potn.local -IL</code></pre>
-
-<p>The output when writing to the standard output would be as follows:</p>
-
-<pre class="wp-block-code"><code>curl -c - https://www.potn.local -IL
+                <p>The output when writing to the standard output would be as follows:</p>
+                <pre><code>curl -c - https://www.potn.local -IL
 HTTP/2 200
- date: Sun, 29 Nov 2020 06:00:48 GMT
- content-type: text/html; charset=UTF-8
- set-cookie: __cfduid=d3d3323872f624290a71bdf44c5a2d8281606629648; expires=Tue, 29-Dec-20 06:00:48 GMT; path=/; domain=.www.potn.local; HttpOnly; SameSite=Lax
- vary: Accept-Encoding
- vary: Accept-Encoding
- set-cookie: wp_visit_time_test=deleted; expires=Thu, 01-Jan-1970 00:00:01 GMT; Max-Age=0
- link: <a href="https://www.potn.local/wp-json/">https://www.potn.local/wp-json/</a>; rel="https://api.w.org/"
- x-powered-by: WP Engine
- x-cacheable: SHORT
- vary: Accept-Encoding,Cookie
- cache-control: max-age=600, must-revalidate
- x-cache: HIT: 1
- x-cache-group: normal
- x-xss-protection: 1; mode=block
- x-content-type-options: nosniff
- x-frame-options: SAMEORIGIN
- referrer-policy: strict-origin
- content-security-policy-report-only: default-src 'none'; form-action 'none'; frame-ancestors 'none'; report-uri https://placeonthenet.report-uri.com/r/d/csp/wizard
- x-donut: 🍩
- strict-transport-security: max-age=63072000
- cf-cache-status: DYNAMIC
- cf-request-id: 06b430016c00000935d4ad3000000001
- expect-ct: max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
- server: cloudflare
- cf-ray: 5f9a1c48ab350935-SEA
+date: Sun, 29 Nov 2020 06:00:48 GMT
+content-type: text/html; charset=UTF-8
+set-cookie: __cfduid=d3d3323872f624290a71bdf44c5a2d8281606629648; expires=Tue, 29-Dec-20 06:00:48 GMT; path=/; domain=.www.potn.local; HttpOnly; SameSite=Lax
+vary: Accept-Encoding
+vary: Accept-Encoding
+set-cookie: wp_visit_time_test=deleted; expires=Thu, 01-Jan-1970 00:00:01 GMT; Max-Age=0
+link: <a href="https://www.potn.local/wp-json/">https://www.potn.local/wp-json/</a>; rel="https://api.w.org/"
+x-powered-by: WP Engine
+x-cacheable: SHORT
+vary: Accept-Encoding,Cookie
+cache-control: max-age=600, must-revalidate
+x-cache: HIT: 1
+x-cache-group: normal
+x-xss-protection: 1; mode=block
+x-content-type-options: nosniff
+x-frame-options: SAMEORIGIN
+referrer-policy: strict-origin
+content-security-policy-report-only: default-src 'none'; form-action 'none'; frame-ancestors 'none'; report-uri https://placeonthenet.report-uri.com/r/d/csp/wizard
+x-donut: 🍩
+strict-transport-security: max-age=63072000
+cf-cache-status: DYNAMIC
+cf-request-id: 06b430016c00000935d4ad3000000001
+expect-ct: max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+server: cloudflare
+cf-ray: 5f9a1c48ab350935-SEA
 
- # Netscape HTTP Cookie File
- # https://curl.haxx.se/docs/http-cookies.html
- # This file was generated by libcurl! Edit at your own risk.
+# Netscape HTTP Cookie File
+# https://curl.haxx.se/docs/http-cookies.html
+# This file was generated by libcurl! Edit at your own risk.
  
 HttpOnly_.www.potn.local       TRUE    /       FALSE   1609221648      __cfduid        d3d3323872f624290a71bdf44c5a2d8281606629648
 www.potn.local  FALSE   /       FALSE   1606629648      wp_visit_time_test      deleted</code></pre>
 
-<h4>User Agents, Referrers and IPs</h4>
-
-<p>Setting User Agents can sometimes help me track down my specific request within logs. Setting the other elements can also help test server side rules such as rules blocking User Agents, referrers or specific IP addresses.</p>
-
-<p>Setting a custom User Agent is as simple as adding the <code>-A</code> or<code> --user-agent</code> such as:</p>
-
-<pre class="wp-block-code"><code>cURL
+                <h4>User Agents, Referrers and IPs</h4>
+                <p>Setting User Agents can sometimes help me track down my specific request within logs. Setting the other elements can also help test server side rules such as rules blocking User Agents, referrers or specific IP addresses.</p>
+                <p>Setting a custom User Agent is as simple as adding the <code>-A</code> or<code> --user-agent</code> such as:</p>
+                <pre><code>cURL
 curl -A "My test User Agent" https://www.potn.local
 
 Log entry
 123.123.123.123 www.potn.local - &#91;29/Nov/2020:06:06:21 +0000] "GET / HTTP/1.0" 200 28406 "-" "My test User Agent"</code></pre>
-
-<p>A referrer works much the same as the User Agent by setting it with the<code> -e</code> or <code>--referer</code> (please not that the spelling is with a single <strong>r</strong>):</p>
-
-<pre class="wp-block-code"><code>cURL
+                <p>A referrer works much the same as the User Agent by setting it with the<code> -e</code> or <code>--referer</code> (please not that the spelling is with a single <strong>r</strong>):</p>
+                <pre><code>cURL
 curl -e "https://mysite.com" https://www.potn.local
 
 Log entry
 123.123.123.123 www.potn.local - &#91;29/Nov/2020:06:10:05 +0000] "GET / HTTP/1.0" 200 28406 "https://mysite.com" "curl/7.58.0"</code></pre>
+                <p>You can even set the IP address your request is coming from, thus spoofing the origin of the request. Of note, for this to work you will need to ensure that the server you are requesting from has <code>real_ip_header X-True-client-IP;</code> set. By sending the header <code>X-True-Client-IP: [your IP]</code>, the server will interpret and use the value provided in the request. The following headers are ideal for this:</p>
+                <pre><code>NGINX Server headers:
 
-<p>You can even set the IP address your request is coming from, thus spoofing the origin of the request. Of note, for this to work you will need to ensure that the server you are requesting from has <code>real_ip_header X-True-client-IP;</code> set. By sending the header <code>X-True-Client-IP: [your IP]</code>, the server will interpret and use the value provided in the request. The following headers are ideal for this:</p>
+set_real_ip_from 0.0.0.0/0;
+real_ip_header X-True-Client-IP;
+real_ip_recursive on;
 
-<pre class="wp-block-code"><code>NGINX Server headers:
-
-<code>set_real_ip_from 0.0.0.0/0;</code>
-<code>real_ip_header X-True-Client-IP;</code>
-<code>real_ip_recursive on;
-</code>
-<code>​cURL</code>
+cURL
 curl -IL --header "X-True-Client-IP: 8.8.8.8" https://www.potn.local</code></pre>
-
-<p>The above can be useful if you are trying to determine whether an IP address is blocked by a firewall or specific server side rules affecting specific IP addresses are working as expected.</p>
-
-<h4>Request method</h4>
-
-<p>Setting the request header is also a tool to have in your arsenal. By default, <code>cURL</code> will use the <code>GET</code> method. By providing the <code>-X</code> flag you can change the method to different <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods">HTTP Request methods</a>. Sending a post request can significantly change how the server responds to your request, for example with WordPress sites, the <code>xmlrpc.php</code> file will require a <code>POST</code> method to respond correctly. Of note, when using the <code>-d</code> (<code>--data</code>) flag, <code>cURL</code> will automatically set the request method to <code>POST</code>:</p>
-
-<pre class="wp-block-code"><code>Simple POST request:
+                <p>The above can be useful if you are trying to determine whether an IP address is blocked by a firewall or specific server side rules affecting specific IP addresses are working as expected.</p>
+                <h4>Request method</h4>
+                <p>Setting the request header is also a tool to have in your arsenal. By default, <code>cURL</code> will use the <code>GET</code> method. By providing the <code>-X</code> flag you can change the method to different <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods">HTTP Request methods</a>. Sending a post request can significantly change how the server responds to your request, for example with WordPress sites, the <code>xmlrpc.php</code> file will require a <code>POST</code> method to respond correctly. Of note, when using the <code>-d</code> (<code>--data</code>) flag, <code>cURL</code> will automatically set the request method to <code>POST</code>:</p>
+                <pre><code>Simple POST request:
 curl -X POST https://www.potn.local/contact
 
 POST request using the data flag:
 curl -d '&lt;?xml version="1.0" encoding="utf-8"?&gt;&lt;methodCall&gt;&lt;methodName&gt;system.listMethods&lt;/methodName&gt;&lt;params&gt;&lt;/params&gt;&lt;/methodCall&gt;' <a rel="noreferrer noopener" target="_blank" href="https://yoursitenameat.wpengine.com/xmlrpc.php">https://www.potn.local/xmlrpc.php</a> -A "cURL Tutorial"</code></pre>
-
-<p>The data example will send a POST request with the <code>methodCall</code> to list all the available/supported methods via <code>xmlrpc.php</code> on a WordPress site.</p>
-
-<h4>Authentication</h4>
-
-<p>In a nutshell, <code>cURL</code> will allow a number of methods for you to set user credentials for basic authentication on a site. This can be done by directly supplying the <code>username:password</code> combo to the URL or using the <code>-u</code> (<code>--user</code>) option:</p>
-
-<pre class="wp-block-code"><code>Set within the request:
+                <p>The data example will send a POST request with the <code>methodCall</code> to list all the available/supported methods via <code>xmlrpc.php</code> on a WordPress site.</p>
+                <h4>Authentication</h4>
+                <p>In a nutshell, <code>cURL</code> will allow a number of methods for you to set user credentials for basic authentication on a site. This can be done by directly supplying the <code>username:password</code> combo to the URL or using the <code>-u</code> (<code>--user</code>) option:</p>
+                <pre><code>Set within the request:
 curl https://testUSER:password123@potn.local
 
 Username and password with option:
@@ -223,15 +197,9 @@ curl -u 'testUSER:password123' https://www.potn.local
 
 Username with a blank password will prompt you for the password:
 curl -u 'testUSER:' https://www.potn.local</code></pre>
-
-<p>The last example may be the safest especially on a shared environment as you will be prompted for the password after making the request.</p>
-
-<h4>Conclusion</h4>
-
-<p>The above is definitely not an exhaustive list, however provides some of the commands I use on a daily basis along with examples and situations I use them in. Further options and use cases can be found on the <a href="https://curl.se/docs/manpage.html">cURL man pages</a>.</p>
-
-<p>. </p>
-
-</div>
-</body>
+                <p>The last example may be the safest especially on a shared environment as you will be prompted for the password after making the request.</p>
+                <h4>Conclusion</h4>
+                <p>The above is definitely not an exhaustive list, however provides some of the commands I use on a daily basis along with examples and situations I use them in. Further options and use cases can be found on the <a href="https://curl.se/docs/manpage.html">cURL man pages</a>.</p>
+            </div>
+    </body>
 </html>
