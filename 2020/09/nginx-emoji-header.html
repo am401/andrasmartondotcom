@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>add emojis to nginx HTTP headers</title>
+        <title>andras marton dot com - add emojis to nginx HTTP headers</title>
         <link rel="stylesheet" href="/style.css?v=1.0.2">
 	    <meta charset="UTF-8">
 	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
         <div class="heading">
-            www.placeonthe.net - my website
+            andras marton dot com
 			<div class="heading-right">
 				<a href="/index.html">&#126;&#47;</a> |
 				<a href="/ctf">ctf</a> |
@@ -34,30 +34,17 @@ x-duck: 🦆</code></pre>
             <p>That lead me to locate other Tweets and posts about using emoji&#8217;s in NGINX headers, or HTTP headers as a whole. After some addtional digging I found that as long as the UTC-8 character set is enabled on the server, the use of emoji&#8217;s within the NGINX configuration file should work.</p>
             <p>I eventually found an NGINX article covering the use of emoji&#8217;s within the NGINX configuration file at <a href="https://www.nginx.com/blog/emoji-nginx-plus-configuration/">Introducing Full Emoji Support in NGINX and NGINX Plus Configuration</a>. The article indicated copying the emoji in to the configuration file will allow it to be used in even more ways than just returning a header, such as adding them as comments within the NGINX configuration file.</p>
             <p>I eventually found a <a href="https://unicode.org/emoji/charts/full-emoji-list.html#1f369">good list of emoji&#8217;s</a> to test within the configuration file and how they would look when being viewed via cURL in this case.</p>
-            <pre><code>curl -IL https://www.placeonthe.net
+            <pre><code>curl -IL https://example.com
 HTTP/2 200
 date: Tue, 15 Sep 2020 03:49:38 GMT
 content-type: text/html; charset=UTF-8
-set-cookie: __cfduid=d793486fe2bfb7cdbbfdb49f9b449b6541600141777; expires=Thu, 15-Oct-20 03:49:37 GMT; path=/; domain=.www.placeonthe.net; HttpOnly; SameSite=Lax
 vary: Accept-Encoding
-vary: Accept-Encoding
-set-cookie: wp_visit_time_test=deleted; expires=Thu, 01-Jan-1970 00:00:01 GMT; Max-Age=0
-link: &lt;https://www.placeonthe.net/wp-json/>; rel="https://api.w.org/"
-x-powered-by: WP Engine
 x-cacheable: SHORT
 vary: Accept-Encoding,Cookie
 cache-control: max-age=600, must-revalidate
 x-cache: MISS
 x-cache-group: normal
-x-xss-protection: 1; mode=block
-x-content-type-options: nosniff
-x-frame-options: SAMEORIGIN
-x-donut: : 🍩
-cf-cache-status: DYNAMIC
-cf-request-id: 05317af42a0000bb1600ae9200000001
-expect-ct: max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
-server: cloudflare
-cf-ray: 5d2f61004a11bb16-SEA</code></pre>
+x-donut: : 🍩</code></pre>
             <p>So far I have tested this on Ubuntu, OSX and OpenBSD using iTerm2 without issues and using Chrome&#8217;s Dev Tools to view headers too. I was able to open the NGINX configuration file using vim and the emoji was present. Parsing the configuration file also did not return any errors!</p>
             <p>In order to set the actual header in the configuration file the following header can be used, just change the header name and the emoji to suit your needs: </p>
             <pre><code>add_header X-Donut: "🍩";</code></pre>

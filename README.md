@@ -5,6 +5,7 @@ Personal website.
 ## 2021-08-30
 ### Changed
 - Updated the content of the pages, making grammatical changes
+- Updated domain URLs and `<title></title>` elements
 ### Fixed
 - Styling issues on some of the pages
 
