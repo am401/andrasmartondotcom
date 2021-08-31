@@ -2,6 +2,11 @@
 Personal website.
 
 # Changelog
+## 2021-08-31
+### Added
+- Favicon headers to the files as well as favicons
+- New CTF pages for HTB Cyber Apocalypse 2021
+
 ## 2021-08-30
 ### Changed
 - Updated the content of the pages, making grammatical changes
