@@ -1,5 +1,5 @@
 # Info
-Reworking the original *www.placeonthe.net* site moving away from WordPress to a static site.
+Personal website.
 
 # Changelog
 ## 2021-08-30
