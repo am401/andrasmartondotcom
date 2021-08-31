@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>andras marton dot com - cyber apocalypse 2021 web challenge inspector gadget</title>
+	    <meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/style.css?v=1.0.3">
+    </head>
+    <body>
+        <div class="heading">
+            andras marton dot com
+			<div class="heading-right">
+				<a href="/index.html">&#126;&#47;</a> |
+				<a href="/ctf">ctf</a> |
+				<a href="#projects">projects</a>
+			</div>
+		</div>
+        <div class="text">
+			<h1>cyber apocalypse 2021 web challenge inspector gadget</h1>
+			<h2>Written: 2021/04/21</h2>
+            <h2>Challenge notes</h2>
+
+            <p>Inspector Gadget was known for having a multitude of tools available for every occasion. Can you find them all?</p>
+            
+            <p>This challenge required a <b>Docker</b> container to be started which lead me to this page:</p>
+
+            <img src="01_inspector_gadget_home_page.jpg">
+
+            <p>The page is a fairly simple <b>HTML</b> page from what I can tell. Based on the challenge, it feels like we are trying to find clue's to the key, which has its start printed on the homepage as <b>CHTB{</b>. Looking at the source code, I immediately noticed this comment towards the bottom of the page:</p>
+
+            <pre><code> <!--1nsp3ction_-->
+</html></pre></code>
+
+<p>I suspected the <b>1nsp3ction_</b> comment was part of the key and  was guiding me to the <b>Inspect</b> window, which I triggered by right clicking on the page and hitting <b>Inspect</b>. This pops open the development console window:</p>
+
+            <img src="02_inspector_gadget_console_window">
+
+            <p><b>us3full_Inf0rm4tion}</b> looks to be another clue, and the closed curly bracket makes me think this is the end of our key. The key still seemed to be missing something. I started to go through all the links to the files I found on the homepage to see if they would yield any further clues, after all, we were piecing the key together.</p>
+
+            <p>During this review, within the <b>/static/js/main.js</b> file, I found the message to our console window that we found earlier:</p>
+
+            <pre><code>/* c4n_r3ve4l_ */</code></pre>
+
+            <p>Using the four different pieces I found, we can now build out our key: <b>CHTB{1nsp3ction_c4n_r3ve4l_us3full_Inf0rm4tion}</b>, suggesting that digging around and inspecting all the files lead us to the key.</p>
+        </div>
+    </body>
+</html>
