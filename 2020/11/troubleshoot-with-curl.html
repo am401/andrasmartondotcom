@@ -23,7 +23,7 @@
             <p>One great feature of cURL is the ability to easily check the headers being returned from a website. In practical terms, this helps me identify the response code my request is returning. It has in the past also helped me to identify whether my request is hitting the right server and whether the right headers are being returned.</p>
             <h3>Returning headers</h3>
             <p>To have cURL return the headers, pass the <b>-I</b> (capital i) or <b>--head</b> flags:</p>
-            <pre><code>➜  curl -I https://example.com
+            <pre><code>curl -I https://example.com
 HTTP/2 200
 date: Sun, 29 Nov 2020 03:58:17 GMT
 content-type: text/html; charset=UTF-8
@@ -42,7 +42,7 @@ referrer-policy: strict-origin</code></pre>
 
             <p>We can see this on sites where a redirect exists from the apex domain to the <b>www subdomain</b> of a site. Without the <b>-L</b> flag, the location would not be followed and the request would return a <b>HTTP/2 301</b> header, however we wouldn't be taken to a new location:</p>
 
-        <pre><code>➜  curl -IL https://example.com
+        <pre><code>curl -IL https://example.com
 HTTP/2 301
 date: Sun, 29 Nov 2020 04:04:05 GMT
 content-type: text/html
@@ -94,10 +94,10 @@ how to fix it, please visit the web page mentioned above.</code></pre>
 
                 <p>The other example is using the cookie-jar to save cookies received from a website:
                 <pre><code>Standard output:
-curl -c - https://www.potn.local -IL
+curl -c - https://example.com -IL
 
 Save to a file:
-curl -c my_cookie_file.txt https://www.potn.local -IL</code></pre>
+curl -c my_cookie_file.txt https://example.com -IL</code></pre>
 
                 <p>The output when writing to the standard output would be as follows:</p>
                 <pre><code>curl -c - https://example.com -IL
@@ -149,22 +149,22 @@ real_ip_header X-True-Client-IP;
 real_ip_recursive on;
 
 cURL
-curl -IL --header "X-True-Client-IP: 12.34.56.78" https://www.potn.local</code></pre>
+curl -IL --header "X-True-Client-IP: 12.34.56.78" https://example.com</code></pre>
                 <p>The above can be useful if you are trying to determine whether an IP address is blocked by a firewall or specific server side rules affecting specific IP addresses are working as expected such as geo-location based redirects or content is being delivered as expected..</p>
                 
                 <h3>Request method</h3>
                 <p>By default, <b>cURL</b> will use the <b>GET</b> method. By providing the <b>-X</b> flag you can change the method to different <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods">HTTP Request methods</a>. Sending a post request can significantly change how the server responds to your request, for example with WordPress sites, the <b>xmlrpc.php</b> file will require a <b>POST</b> method to interact with. Of note, when using the <b>-d</b> (<b>--data</b>) flag, <b>cURL</b> will automatically set the request method to <b>POST</b>. The below example is an example of a <b>POST</b> request using the data flag:</p>
-                <pre><code>curl -d '&lt;?xml version="1.0" encoding="utf-8"?&gt;&lt;methodCall&gt;&lt;methodName&gt;system.listMethods&lt;/methodName&gt;&lt;params&gt;&lt;/params&gt;&lt;/methodCall&gt;' <a rel="noreferrer noopener" target="_blank" href="https://yoursitenameat.wpengine.com/xmlrpc.php">https://www.potn.local/xmlrpc.php</a> -A "cURL Tutorial"</code></pre>
+                <pre><code>curl -d '&lt;?xml version="1.0" encoding="utf-8"?&gt;&lt;methodCall&gt;&lt;methodName&gt;system.listMethods&lt;/methodName&gt;&lt;params&gt;&lt;/params&gt;&lt;/methodCall&gt;' <a rel="noreferrer noopener" target="_blank" href="https://yoursitenameat.wpengine.com/xmlrpc.php">https://example.com/xmlrpc.php</a> -A "cURL Tutorial"</code></pre>
                 <p>The data example will send a POST request with the <code>methodCall</code> to list all the available/supported methods via <code>xmlrpc.php</code> on a WordPress site.</p>
 
                 <h3>Authentication</h3>
                 <p>There are a number of methods to authenticate, primarily using basic authentication methods. This can be done by directly supplying the <b>username:password</b> combo to the URL or using the <b>-u</b> (<b>--user</b>) option. To note, providing just the username will prompt the user to enter their password:</p>
                 <pre><code>Set within the request:
-curl https://testUSER:password123@potn.local
+curl https://testUSER:password123@example.com
 
 or
 
-curl -u 'testUSER:password123' https://www.potn.local</code></pre>
+curl -u 'testUSER:password123' https://example.com</code></pre>
 
                 <p>A safer option than directly entering passwords and API key tokens into the shell is to use a <b>--netrc</b>. This uses the <b>.netrc</b> file in your users home directory. Alternatively using <b>--netrc-file</b> allows you to specify the file to use for authentication. The <b>.netrc</b> file uses the following format, where <b>machine</b> is the domain you are linking the authentication credentials to:
                 <pre><code>machine example.com
