@@ -2,6 +2,12 @@
 Reworking the original *www.placeonthe.net* site moving away from WordPress to a static site.
 
 # Changelog
+## 2021-08-30
+### Changed
+- Updated the content of the pages, making grammatical changes
+### Fixed
+- Styling issues on some of the pages
+
 ## 2021-08-16
 ### Fixed
 - Styling errors within the CTF pages

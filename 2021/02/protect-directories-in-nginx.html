@@ -18,7 +18,7 @@
         <div class="text">
             <h1>protect directories in nginx</h1>
             <h2>Written: 2020/12/31</h2>
-            <p>I've recently had a number of requests for custom NGINX rules to be created in order to protect WordPress upload directories. This scenario may surface if you are using NGINX as your primary web server or NGINX sits before say an upstream Apache server and the <strong>.htaccess</strong> files is not an option. I have recently configured several rules to protect directories.<br>The following rule is specifically for static files, such as PDFs:</p>
+            <p>I've recently had a number of requests for custom NGINX rules to be created in order to protect WordPress upload directories. This scenario may surface if you are using NGINX as your primary web server or NGINX sits before say an upstream Apache server and the <strong>.htaccess</strong> files is not an option.<br>The following rule is specifically for static files, such as PDFs:</p>
             <pre><code>if ( $uri ~* ^/wp-content/uploads/.+\.pdf$ ) {
     set $var 1;
 }
@@ -28,7 +28,7 @@ if ( $http_cookie !~* wordpress_logged_in ) {
 if ( $var = 11 ) {
     return 403;
 }</code></pre>
-            <p>The above rule works on by checking if the incoming request URI is looking for PDF files within <strong>/wp-content/uploads/</strong> and if so whether the <strong>wordpress_logged_in</strong> cookie is set. If it is not then return the a <strong>HTTP 403</strong> response. Since <a href="https://www.nginx.com/resources/wiki/start/topics/depth/ifisevil/">NGINX does not use <strong>if/else</strong> statements</a>, we build out our rule using several <strong>if</strong> statements.</p>
+            <p>The above rule works by checking if the incoming request URI is looking for PDF files within <strong>/wp-content/uploads/</strong> and if so whether the <strong>wordpress_logged_in</strong> cookie is set. If it is not then return the <strong>HTTP 403</strong> response. Since <a href="https://www.nginx.com/resources/wiki/start/topics/depth/ifisevil/">NGINX does not use <strong>if/else</strong> statements</a>, we build out our rule using several <strong>if</strong> statements.</p>
             <p>Another example we can use is the following, which uses a location block to achieve similar:</p>
             <pre><code>location ~* ^/wp-content/uploads/protected/(?!public_images/).+\.jpg$ {
     add_header Cache-Control "no-store; max-age=0";
@@ -36,8 +36,8 @@ if ( $var = 11 ) {
         return 403;
     }
 }</code></pre>
-            <p>The above again uses a very similar process, however this time using a <strong>location block</strong>. The reason behind using a <strong>location block</strong> is since we are handling JPG files in this examples, we do not want additional caching layers to cache these when a logged in user views them. Since we want to alter the behavior of the JPG files in this specification path only, to remove pre-existing configurations, we carve out a <strong>location block</strong> and pass back the <strong>Cache-Control</strong> header. By setting the <strong>no-store</strong> argument, it tells caching applications not to store the response on cache. By reducing the <strong>max-age</strong> to zero, we also force browsers to check the header each time.</p>
-            <p>As an added feature, in this example I have implemented a <strong>negative lookahead</strong> in order to ignore images found in the <strong>public_images</strong> directory, which we want users who have not logged in to be able to access.</p>
+            <p>The above again uses a very similar process, however this time using a <strong>location block</strong>. In this case, we want to protect JPG images within the <b>/wp-content/uploads/protected</b> directory, however excluding the <b>public_images</b> directory.</p>
+            <p>On top of wanting to restrict access to these files, we also want to prevent browsers and CDN providers from caching the images to prevent our condition for logged in users from being bypassed. This is achieved with setting the <b>Cache-Control</b> header, which we want irrespective of whether a <b>403</b> is returned or not.</p>
         </div>
     </body>
 </html>
