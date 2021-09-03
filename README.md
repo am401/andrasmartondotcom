@@ -2,6 +2,12 @@
 Personal website.
 
 # Changelog
+## 2021-09-03
+### Changed
+- Updated `style.css` version on pages to `1.0.5` due to some caching issues
+### Fixed
+- Adjusted the `warning-header` class that was typo'd yesterday on the pages
+
 ## 2021-09-02
 ### Added
 - CSS class for `blockquotes` element
