@@ -2,6 +2,16 @@
 Personal website.
 
 # Changelog
+## 2021-09-02
+### Added
+- CSS class for `blockquotes` element
+- CSS class to be used with `<h2>` elements
+- Warning for spoilors on individual CTF pages using the newly created CSS class (`heading-warning`)
+
+### Changed
+- Updated `style.css` version to `1.0.4` on pages
+- Applied style change to `blockquotes` elements
+
 ## 2021-08-31
 ### Added
 - Favicon headers to the files as well as favicons

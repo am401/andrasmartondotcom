@@ -4,7 +4,7 @@
         <title>andras marton dot com cloud flaws aws ctf level 2</title>
 	    <meta charset="UTF-8">
 	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="/style.css?v=1.0.3">
+        <link rel="stylesheet" href="/style.css?v=1.0.4">
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -21,9 +21,10 @@
 		</div>
         <div class="text">
 			<h1>cloud flaws aws ctf level 1</h1>
+			<h2 class="heading-warning">These CTF write-ups contain spoilers so bear that in mind when reading.</h2>
 			<h2>Written: 2021/08/16</h2>
             <h2>Challenge notes</h2>
-            <p>The next level is fairly similar, with a slight twist. You're going to need your own AWS account for this. You just need the free tier.</p>
+            <blockquote class="blockquote-style">The next level is fairly similar, with a slight twist. You're going to need your own AWS account for this. You just need the free tier.</blockquote>
             <hr>
 			<p>This challenge starts off much like the <a href="level-1.html">first challenge</a>, however on this occasion we are making use of an AWS account. I suspected this may be to use <a href="https://aws.amazon.com/cli/">AWS CLI</a>. This is not something I used a lot, so it was back to digging around documentation.</p>
 			<p>I started to look at the <a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html#cli-configure-quickstart-creds">Amazon configuration basics documentation for AWS CLI</a> for an idea. This is where it became apparent why I needed an AWS account in the first place.</p>
