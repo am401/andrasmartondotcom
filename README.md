@@ -1,3 +1,5 @@
+# Archiving as the [amdotcom](https://github.com/am401/amdotcom) repo has overtaken this one.
+
 # Info
 Personal website.
 
